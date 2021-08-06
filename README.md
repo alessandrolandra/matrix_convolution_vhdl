@@ -1,2 +1,21 @@
 # matrix_convolution_vhdl
-Matrix convolution of 16x16 matrices with 3x3 kernel (already inverted)
+
+Module for performing matrix convolution of a 16x16 matrix and a 3x3 kernel, already provided inverted./
+Data are represented in unsigned fixed-point arithmetic (16.16 bit)./
+1 padding of 0 and stride value of 1 are used, so that the output size will be 16x16./
+The module allows to:/
+* write the input matrix and the kernel (element by element using addressing)
+* read the output matrix (data streaming when computing the convolution)
+* trigger the computation
+* reset matrices values
+
+## VHDL
+
+The whole VHDL code could be found in the [VHDL](VHDL) directory./
+Both the developed architectures are written in the behavioral way, allowing more specific hardware implementations.
+
+## Verification
+
+The desired behavior has been implemented through a higher programming language: C./
+It is possible to see the whole high-level code in the [Verification](Verification) directory./
+As it is possible to see in the attached program, the matrix and kernel init functions create random unsigned long numbers, store them in memory, convert them in binary and write these values in the files that will be provided as inputs to the VHDL testbench. Then, the computeConvolution function does the math and writes to an output file, and to the console, the resulting matrix. The choice of internally working with ulong numbers was driven by the fact that, to convert a double number into a fixed-point binary one with 16 bits of decimal part, a loss of precision was always seen and the result of the convolution between double values was different from the same convolution of the converted binary values. So, not to use pure binary digits, which are already used in the VHDL code, ulong type has been used.
